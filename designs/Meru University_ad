@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meru University – Ad Poster</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Raleway:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #0a0a0a;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    font-family: 'Raleway', sans-serif;
+  }
+
+  .poster {
+    width: 700px;
+    height: 900px;
+    position: relative;
+    overflow: hidden;
+    background: #0d1b2a;
+    box-shadow: 0 40px 100px rgba(0,0,0,0.7);
+  }
+
+  /* Background mountain/lake illustration */
+  .bg-scene {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 50% 30%, rgba(30,90,180,0.35) 0%, transparent 60%),
+      linear-gradient(180deg, #07111f 0%, #0d2340 30%, #1a4a7a 55%, #2a6aaa 65%, #1a3a5c 75%, #0a1520 100%);
+  }
+
+  /* Mountain silhouettes */
+  .mountains {
+    position: absolute;
+    bottom: 340px;
+    left: 0;
+    width: 100%;
+    height: 320px;
+  }
+  .mountains svg { width: 100%; height: 100%; }
+
+  /* Lake reflection */
+  .lake {
+    position: absolute;
+    bottom: 200px;
+    left: 0;
+    width: 100%;
+    height: 160px;
+    background: linear-gradient(180deg, rgba(30,80,160,0.6) 0%, rgba(10,30,60,0.9) 100%);
+  }
+  .lake::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(100,180,255,0.5), transparent);
+  }
+  /* Ripple lines */
+  .ripple {
+    position: absolute;
+    width: 200px;
+    height: 8px;
+    border-radius: 50%;
+    border-top: 1px solid rgba(150,200,255,0.2);
+  }
+  .r1 { top: 30px; left: 150px; width: 140px; }
+  .r2 { top: 55px; left: 250px; width: 200px; }
+  .r3 { top: 80px; left: 120px; width: 170px; }
+  .r4 { top: 100px; left: 320px; width: 130px; }
+
+  /* Stars */
+  .stars {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 55%;
+    overflow: hidden;
+  }
+  .star {
+    position: absolute;
+    width: 2px; height: 2px;
+    background: white;
+    border-radius: 50%;
+    animation: twinkle 3s infinite;
+  }
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
+  }
+
+  /* Gold border frame */
+  .frame {
+    position: absolute;
+    inset: 20px;
+    border: 2px solid rgba(212,175,55,0.5);
+    pointer-events: none;
+  }
+  .frame::before {
+    content: '';
+    position: absolute;
+    inset: 8px;
+    border: 1px solid rgba(212,175,55,0.2);
+  }
+  .corner {
+    position: absolute;
+    width: 30px; height: 30px;
+    border-color: #d4af37;
+    border-style: solid;
+  }
+  .corner.tl { top: -2px; left: -2px; border-width: 3px 0 0 3px; }
+  .corner.tr { top: -2px; right: -2px; border-width: 3px 3px 0 0; }
+  .corner.bl { bottom: -2px; left: -2px; border-width: 0 0 3px 3px; }
+  .corner.br { bottom: -2px; right: -2px; border-width: 0 3px 3px 0; }
+
+  /* Crest area */
+  .crest {
+    position: absolute;
+    top: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+  }
+  .crest-circle {
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    border: 2px solid #d4af37;
+    background: rgba(13,27,42,0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 12px;
+    font-size: 36px;
+  }
+  .crest-tagline {
+    font-family: 'Raleway', sans-serif;
+    font-size: 10px;
+    letter-spacing: 4px;
+    color: #d4af37;
+    text-transform: uppercase;
+  }
+
+  /* Main content */
+  .content {
+    position: absolute;
+    bottom: 200px;
+    left: 0; right: 0;
+    padding: 0 60px;
+    text-align: center;
+  }
+
+  .university-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 52px;
+    font-weight: 900;
+    color: #ffffff;
+    line-height: 1.1;
+    letter-spacing: 2px;
+    text-shadow: 0 4px 30px rgba(30,100,200,0.5);
+    margin-bottom: 8px;
+  }
+  .university-name span {
+    color: #d4af37;
+    display: block;
+    font-size: 58px;
+  }
+
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 18px auto;
+    max-width: 400px;
+  }
+  .divider-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #d4af37, transparent);
+  }
+  .divider-diamond {
+    width: 8px; height: 8px;
+    background: #d4af37;
+    transform: rotate(45deg);
+    flex-shrink: 0;
+  }
+
+  .headline {
+    font-family: 'Raleway', sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    letter-spacing: 6px;
+    color: rgba(200,220,255,0.8);
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+
+  .tagline {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-style: italic;
+    color: rgba(255,255,255,0.85);
+    line-height: 1.5;
+    margin-bottom: 30px;
+  }
+
+  .pills {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+  }
+  .pill {
+    padding: 6px 16px;
+    border: 1px solid rgba(212,175,55,0.5);
+    color: #d4af37;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+
+  .cta-btn {
+    display: inline-block;
+    padding: 14px 48px;
+    background: linear-gradient(135deg, #d4af37, #b8941e);
+    color: #0d1b2a;
+    font-family: 'Raleway', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s;
+  }
+  .cta-btn:hover { transform: scale(1.03); }
+  .cta-btn::after {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 60%;
+    height: 100%;
+    background: rgba(255,255,255,0.25);
+    transform: skewX(-20deg);
+    transition: left 0.5s;
+  }
+  .cta-btn:hover::after { left: 150%; }
+
+  /* Bottom bar */
+  .bottom-bar {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 180px;
+    background: linear-gradient(180deg, transparent, rgba(5,10,20,0.95) 40%);
+    display: flex;
+    align-items: flex-end;
+    padding: 0 60px 30px;
+    justify-content: space-between;
+  }
+  .info-block { text-align: left; }
+  .info-block.right { text-align: right; }
+  .info-label {
+    font-size: 9px;
+    letter-spacing: 3px;
+    color: #d4af37;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .info-value {
+    font-size: 12px;
+    color: rgba(255,255,255,0.7);
+    font-weight: 300;
+  }
+
+  /* Glow orbs */
+  .orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.15;
+    pointer-events: none;
+  }
+  .orb1 { width: 400px; height: 400px; background: #1a6ab0; top: -100px; left: -100px; }
+  .orb2 { width: 300px; height: 300px; background: #2a4ab0; bottom: 200px; right: -80px; }
+  .orb3 { width: 200px; height: 200px; background: #d4af37; bottom: 300px; left: 100px; opacity: 0.08; }
+
+  /* Animations */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .university-name { animation: fadeUp 1s ease 0.2s both; }
+  .headline        { animation: fadeUp 1s ease 0.4s both; }
+  .tagline         { animation: fadeUp 1s ease 0.6s both; }
+  .pills           { animation: fadeUp 1s ease 0.8s both; }
+  .cta-btn         { animation: fadeUp 1s ease 1s both; }
+</style>
+</head>
+<body>
+<div class="poster">
+  <!-- Glow orbs -->
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+  <div class="orb orb3"></div>
+
+  <!-- Background -->
+  <div class="bg-scene"></div>
+
+  <!-- Stars -->
+  <div class="stars" id="stars"></div>
+
+  <!-- Mountains SVG -->
+  <div class="mountains">
+    <svg viewBox="0 0 700 320" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Far mountains (light) -->
+      <polygon points="0,320 80,160 160,220 250,100 340,180 430,80 520,160 610,120 700,200 700,320" fill="#1a3a6a" opacity="0.6"/>
+      <!-- Mid mountains -->
+      <polygon points="0,320 60,220 140,260 220,150 310,200 400,110 490,180 580,140 670,190 700,200 700,320" fill="#112a50" opacity="0.8"/>
+      <!-- Near dark mountains -->
+      <polygon points="0,320 0,280 70,250 150,290 230,230 320,270 410,220 490,260 580,215 660,245 700,230 700,320" fill="#0a1c35"/>
+      <!-- Snow caps -->
+      <polygon points="250,100 265,120 235,120" fill="rgba(220,235,255,0.6)"/>
+      <polygon points="430,80 447,104 413,104" fill="rgba(220,235,255,0.7)"/>
+      <polygon points="610,120 625,142 595,142" fill="rgba(220,235,255,0.5)"/>
+    </svg>
+  </div>
+
+  <!-- Lake -->
+  <div class="lake">
+    <div class="ripple r1"></div>
+    <div class="ripple r2"></div>
+    <div class="ripple r3"></div>
+    <div class="ripple r4"></div>
+  </div>
+
+  <!-- Gold frame -->
+  <div class="frame">
+    <div class="corner tl"></div>
+    <div class="corner tr"></div>
+    <div class="corner bl"></div>
+    <div class="corner br"></div>
+  </div>
+
+  <!-- Crest -->
+  <div class="crest">
+    <div class="crest-circle">🎓</div>
+    <div class="crest-tagline">Est. 2008 · Meru, Kenya</div>
+  </div>
+
+  <!-- Main content -->
+  <div class="content">
+    <div class="headline">Where Excellence Takes Shape</div>
+    <div class="university-name">
+      MERU
+      <span>UNIVERSITY</span>
+    </div>
+    <div class="divider">
+      <div class="divider-line"></div>
+      <div class="divider-diamond"></div>
+      <div class="divider-line"></div>
+    </div>
+    <div class="tagline">
+      Shaping Minds.<br>Transforming Communities.<br>Building a Better Tomorrow.
+    </div>
+    <div class="pills">
+      <div class="pill">Science & Technology</div>
+      <div class="pill">Business</div>
+      <div class="pill">Education</div>
+      <div class="pill">Engineering</div>
+    </div>
+    <div class="cta-btn">Apply Now — 2025 Intake</div>
+  </div>
+
+  <!-- Bottom bar -->
+  <div class="bottom-bar">
+    <div class="info-block">
+      <div class="info-label">Location</div>
+      <div class="info-value">Meru, Kenya</div>
+    </div>
+    <div class="info-block right">
+      <div class="info-label">Website</div>
+      <div class="info-value">www.must.ac.ke</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Generate random stars
+  const container = document.getElementById('stars');
+  for (let i = 0; i < 80; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    s.style.left = Math.random() * 100 + '%';
+    s.style.top = Math.random() * 100 + '%';
+    s.style.width = s.style.height = (Math.random() * 2 + 1) + 'px';
+    s.style.animationDelay = (Math.random() * 3) + 's';
+    s.style.animationDuration = (Math.random() * 2 + 2) + 's';
+    container.appendChild(s);
+  }
+</script>
+</body>
+</html>
+  
