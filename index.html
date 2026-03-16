@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pantane Designs</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+
+  <style>
+    /* ─── RESET & ROOT ─────────────────────────────────────────── */
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+    :root {
+      --bg:       #080808;
+      --surface:  #111111;
+      --border:   rgba(255,255,255,0.07);
+      --accent:   #e8ff3c;        /* electric lime */
+      --text:     #f0f0f0;
+      --muted:    rgba(240,240,240,0.38);
+      --font-display: 'Bebas Neue', sans-serif;
+      --font-body:    'DM Sans', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      cursor: none;
+      overflow-x: hidden;
+    }
+
+    /* ─── CUSTOM CURSOR ─────────────────────────────────────────── */
+    #cursor {
+      position: fixed;
+      width: 12px; height: 12px;
+      background: var(--accent);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%,-50%);
+      transition: width .15s, height .15s, opacity .2s;
+      mix-blend-mode: difference;
+    }
+    #cursor.grow { width: 36px; height: 36px; opacity: .6; }
+
+    /* ─── NOISE OVERLAY ─────────────────────────────────────────── */
+    body::before {
+      content:'';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+      opacity: .028;
+      pointer-events: none;
+      z-index: 1000;
+    }
+
+    /* ─── HERO ──────────────────────────────────────────────────── */
+    #hero {
+      position: relative;
+      height: 100vh;
+      min-height: 600px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      padding: 0 24px;
+    }
+
+    /* Animated gradient mesh background */
+    #hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 20% 50%, rgba(232,255,60,.07) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 80% at 80% 30%, rgba(100,80,255,.06) 0%, transparent 55%),
+        radial-gradient(ellipse 50% 50% at 50% 80%, rgba(255,60,120,.05) 0%, transparent 50%);
+      animation: meshShift 12s ease-in-out infinite alternate;
+    }
+    @keyframes meshShift {
+      0%   { opacity: .7; }
+      100% { opacity: 1; transform: scale(1.06) rotate(-1deg); }
+    }
+
+    /* Horizontal scan line */
+    #hero::after {
+      content: '';
+      position: absolute;
+      left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      animation: scanLine 6s linear infinite;
+      opacity: .25;
+    }
+    @keyframes scanLine {
+      0%   { top: -2px; }
+      100% { top: 102%; }
+    }
+
+    .hero-eyebrow {
+      font-family: var(--font-body);
+      font-size: clamp(10px,1.2vw,13px);
+      font-weight: 500;
+      letter-spacing: 6px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 18px;
+      opacity: 0;
+      animation: fadeUp .8s ease .2s forwards;
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(72px, 14vw, 200px);
+      line-height: .9;
+      text-align: center;
+      letter-spacing: -2px;
+      background: linear-gradient(135deg, #fff 30%, rgba(232,255,60,.7) 60%, #fff 80%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      background-size: 200% 200%;
+      animation: titleReveal 1s cubic-bezier(.16,1,.3,1) .1s forwards, shimmer 5s linear 1.2s infinite;
+      opacity: 0;
+      position: relative;
+      z-index: 2;
+    }
+    @keyframes titleReveal {
+      from { opacity:0; transform: translateY(40px) skewY(2deg); }
+      to   { opacity:1; transform: translateY(0) skewY(0); }
+    }
+    @keyframes shimmer {
+      0%   { background-position: 0% 50%; }
+      100% { background-position: 200% 50%; }
+    }
+
+    .hero-sub {
+      margin-top: 28px;
+      font-size: clamp(13px,1.4vw,16px);
+      font-weight: 300;
+      color: var(--muted);
+      letter-spacing: 1px;
+      opacity: 0;
+      animation: fadeUp .8s ease .7s forwards;
+    }
+
+    .hero-scroll {
+      position: absolute;
+      bottom: 36px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      opacity: 0;
+      animation: fadeUp .8s ease 1.2s forwards;
+    }
+    .hero-scroll span {
+      font-size: 10px;
+      letter-spacing: 4px;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+    .scroll-line {
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(180deg, var(--accent), transparent);
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+    @keyframes scrollPulse {
+      0%,100% { transform: scaleY(1); opacity:1; }
+      50%      { transform: scaleY(.5); opacity:.4; }
+    }
+
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(20px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+
+    /* Floating accent shapes */
+    .shape {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(120px);
+      pointer-events: none;
+    }
+    .s1 { width:500px; height:500px; background:rgba(232,255,60,.04); top:-100px; left:-150px; }
+    .s2 { width:400px; height:400px; background:rgba(100,80,255,.05); bottom:-80px; right:-80px; }
+
+    /* ─── GALLERY SECTION ───────────────────────────────────────── */
+    #gallery {
+      padding: 100px 40px 120px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 60px;
+    }
+    .section-label span {
+      font-size: 11px;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 500;
+    }
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* Empty state */
+    #empty-state {
+      text-align: center;
+      padding: 100px 20px;
+      display: none;
+    }
+    #empty-state .empty-icon { font-size: 48px; margin-bottom: 20px; opacity: .4; }
+    #empty-state p {
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.8;
+    }
+    #empty-state code {
+      background: var(--surface);
+      padding: 2px 8px;
+      border-radius: 4px;
+      color: var(--accent);
+      font-size: 13px;
+    }
+
+    /* Grid */
+    #designs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 24px;
+    }
+
+    /* Card */
+    .design-card {
+      position: relative;
+      border-radius: 4px;
+      overflow: hidden;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      aspect-ratio: 16/10;
+      cursor: none;
+      transition: transform .4s cubic-bezier(.16,1,.3,1), border-color .3s;
+    }
+    .design-card:hover {
+      transform: translateY(-6px) scale(1.01);
+      border-color: rgba(232,255,60,.3);
+    }
+
+    /* iframe preview */
+    .design-card iframe {
+      width: 200%;
+      height: 200%;
+      border: none;
+      transform: scale(.5);
+      transform-origin: top left;
+      pointer-events: none;
+      display: block;
+    }
+
+    /* Hover overlay */
+    .card-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(8,8,8,.85);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      opacity: 0;
+      transition: opacity .3s ease;
+      backdrop-filter: blur(4px);
+    }
+    .design-card:hover .card-overlay { opacity: 1; }
+
+    .card-name {
+      font-family: var(--font-display);
+      font-size: 22px;
+      letter-spacing: 2px;
+      color: #fff;
+      text-align: center;
+      padding: 0 16px;
+    }
+
+    .btn-download {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 11px 28px;
+      background: var(--accent);
+      color: #080808;
+      font-family: var(--font-body);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 2px;
+      transition: transform .2s, background .2s;
+      cursor: none;
+    }
+    .btn-download:hover { transform: scale(1.05); background: #f5ff6e; }
+    .btn-download svg { flex-shrink: 0; }
+
+    /* Corner accent on card */
+    .design-card::after {
+      content: '';
+      position: absolute;
+      top: 0; right: 0;
+      width: 0; height: 0;
+      border-style: solid;
+      border-width: 0 28px 28px 0;
+      border-color: transparent var(--accent) transparent transparent;
+      opacity: 0;
+      transition: opacity .3s;
+    }
+    .design-card:hover::after { opacity: 1; }
+
+    /* ─── FOOTER ────────────────────────────────────────────────── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 32px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    footer .logo {
+      font-family: var(--font-display);
+      font-size: 22px;
+      letter-spacing: 3px;
+      color: var(--accent);
+    }
+    footer p {
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 1px;
+    }
+
+    /* ─── RESPONSIVE ────────────────────────────────────────────── */
+    @media (max-width: 600px) {
+      #gallery { padding: 60px 20px 80px; }
+      #designs-grid { grid-template-columns: 1fr; }
+      footer { flex-direction: column; gap: 12px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Custom cursor -->
+  <div id="cursor"></div>
+
+  <!-- ── HERO ──────────────────────────────────────────────────── -->
+  <section id="hero">
+    <div class="shape s1"></div>
+    <div class="shape s2"></div>
+
+    <p class="hero-eyebrow">Creative Portfolio</p>
+    <h1 class="hero-title">PANTANE<br>DESIGNS</h1>
+    <p class="hero-sub">Scroll to explore the collection</p>
+
+    <div class="hero-scroll">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- ── GALLERY ────────────────────────────────────────────────── -->
+  <section id="gallery">
+    <div class="section-label">
+      <span>Designs</span>
+    </div>
+
+    <!-- Empty state shown when designs array is empty -->
+    <div id="empty-state">
+      <div class="empty-icon">🗂️</div>
+      <p>
+        No designs yet.<br>
+        Drop your HTML files into the <code>designs/</code> folder,<br>
+        then add each filename to the <code>designs</code> array in the script below.
+      </p>
+    </div>
+
+    <div id="designs-grid"></div>
+  </section>
+
+  <!-- ── FOOTER ────────────────────────────────────────────────── -->
+  <footer>
+    <div class="logo">PD</div>
+    <p>© 2025 Pantane Designs. All rights reserved.</p>
+  </footer>
+
+  <script>
+    /* ═══════════════════════════════════════════════════════════
+       ADD YOUR DESIGN FILES HERE
+       Just drop the HTML file into the /designs/ folder and
+       add its filename (without path) to this array.
+       The display name is derived automatically from the filename.
+       Example:
+         { file: "meru-university.html" },
+         { file: "hotel-brochure.html", name: "3 Steers Hotel" },
+    ═══════════════════════════════════════════════════════════ */
+    const designs = [
+      // { file: "meru-university.html" },
+      // { file: "hotel-brochure.html", name: "3 Steers Hotel" },
+    ];
+
+    /* ── Cursor ─────────────────────────────────────────────────── */
+    const cursor = document.getElementById('cursor');
+    document.addEventListener('mousemove', e => {
+      cursor.style.left = e.clientX + 'px';
+      cursor.style.top  = e.clientY + 'px';
+    });
+    document.querySelectorAll('a, button, .design-card').forEach(el => {
+      el.addEventListener('mouseenter', () => cursor.classList.add('grow'));
+      el.addEventListener('mouseleave', () => cursor.classList.remove('grow'));
+    });
+
+    /* ── Build gallery ──────────────────────────────────────────── */
+    const grid   = document.getElementById('designs-grid');
+    const empty  = document.getElementById('empty-state');
+
+    function toDisplayName(filename) {
+      return filename
+        .replace(/\.html?$/i, '')
+        .replace(/[-_]/g, ' ')
+        .replace(/\b\w/g, c => c.toUpperCase());
+    }
+
+    if (designs.length === 0) {
+      empty.style.display = 'block';
+    } else {
+      designs.forEach(({ file, name }, i) => {
+        const displayName = name || toDisplayName(file);
+        const src = `designs/${file}`;
+
+        const card = document.createElement('div');
+        card.className = 'design-card';
+        card.style.animationDelay = `${i * 0.08}s`;
+        card.style.opacity = '0';
+        card.style.animation = `fadeUp .6s ease ${i * 0.08 + 0.1}s forwards`;
+
+        card.innerHTML = `
+          <iframe src="${src}" loading="lazy" scrolling="no"
+                  title="${displayName}" sandbox="allow-scripts allow-same-origin"></iframe>
+          <div class="card-overlay">
+            <div class="card-name">${displayName}</div>
+            <a class="btn-download" href="${src}" download="${file}">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="7 10 12 15 17 10"/>
+                <line x1="12" y1="15" x2="12" y2="3"/>
+              </svg>
+              Download
+            </a>
+          </div>`;
+
+        grid.appendChild(card);
+      });
+
+      /* Re-bind cursor grow for dynamically added cards */
+      document.querySelectorAll('.design-card, .btn-download').forEach(el => {
+        el.addEventListener('mouseenter', () => cursor.classList.add('grow'));
+        el.addEventListener('mouseleave', () => cursor.classList.remove('grow'));
+      });
+    }
+  </script>
+</body>
+  </html>
+
